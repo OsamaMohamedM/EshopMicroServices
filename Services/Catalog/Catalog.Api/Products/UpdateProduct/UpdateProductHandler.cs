@@ -1,4 +1,5 @@
 using BuildingBlocks.CQRS;
+using Catalog.Api.Exception;
 using Catalog.Api.Models;
 using Marten;
 
@@ -15,11 +16,10 @@ namespace Catalog.Api.Products.UpdateProduct
             if (request == null) throw new ArgumentNullException(nameof(request));
             if (request.Id == Guid.Empty) throw new ArgumentException("Product ID cannot be empty", nameof(request.Id));
 
-            var product = await session.Query<Product>()
-                .FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
+            var product = await session.LoadAsync<Product>(request.Id, cancellationToken);
 
             if (product == null)
-                throw new KeyNotFoundException($"Product with ID {request.Id} not found");
+                throw new ProductNotFountException(request.Id);
 
             product.Name = request.Name;
             product.Description = request.Description;

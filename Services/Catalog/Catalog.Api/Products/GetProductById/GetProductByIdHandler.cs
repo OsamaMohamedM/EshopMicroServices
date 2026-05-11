@@ -1,4 +1,5 @@
 using BuildingBlocks.CQRS;
+using Catalog.Api.Exception;
 using Catalog.Api.Models;
 using Marten;
 
@@ -16,7 +17,6 @@ namespace Catalog.Api.Products.GetProductById
             if (request == null) throw new ArgumentNullException(nameof(request));
             if (request.Id == Guid.Empty) throw new ArgumentException("Product ID cannot be empty", nameof(request.Id));
 
-            
             var product = await session.Query<Product>()
                 .Where(p => p.Id == request.Id)
                 .Select(p => new ProductDto(
@@ -29,7 +29,7 @@ namespace Catalog.Api.Products.GetProductById
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (product == null)
-                throw new KeyNotFoundException($"Product with ID {request.Id} not found");
+                throw new ProductNotFountException(request.Id);
 
             return new GetProductByIdResult(product);
         }
