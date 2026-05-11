@@ -27,7 +27,7 @@ builder.Services.AddMediatR(cofig =>
 {
     cofig.RegisterServicesFromAssembly(typeof(Program).Assembly);
     cofig.AddOpenBehavior(typeof(ValidatorBehavior<,>));
-    cofig.AddOpenBehavior(typeof(ILoggingBehaviorr<,>));
+    cofig.AddOpenBehavior(typeof(LoggingBehaviorr<,>));
 });
 
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);

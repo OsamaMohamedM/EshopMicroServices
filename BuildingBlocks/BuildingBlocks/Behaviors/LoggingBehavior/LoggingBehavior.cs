@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace BuildingBlocks.Behaviors.LoggingBehavior
 {
-    public class ILoggingBehaviorr<TRequest, TResponse>(ILogger<ILoggingBehaviorr<TRequest, TResponse>> logger) :
+    public class LoggingBehaviorr<TRequest, TResponse>(ILogger<LoggingBehaviorr<TRequest, TResponse>> logger) :
         IPipelineBehavior<TRequest, TResponse>
         where TRequest : notnull, IRequest<TResponse>
         where TResponse : notnull

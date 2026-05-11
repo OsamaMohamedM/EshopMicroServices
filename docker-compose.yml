@@ -4,16 +4,29 @@ services:
       context: .
       dockerfile: Services/Catalog/Catalog.Api/Dockerfile
     container_name: catalog.api
-    ports:
-      - "5432:5432"
     depends_on:
-      - postgres_db
+      - postgres_catalog
 
-  postgres_db:
+  basket.api:
+    build:
+      context: .
+      dockerfile: Services/Basket/Basket.api/Dockerfile
+    container_name: basket.api
+    depends_on:
+      - postgres_basket
+
+  postgres_catalog:
     image: postgres
     container_name: postgres_catalog
     volumes:
-      - postgres_data:/var/lib/postgresql
+      - postgres_catalog_data:/var/lib/postgresql
+
+  postgres_basket:
+    image: postgres
+    container_name: postgres_basket
+    volumes:
+      - postgres_basket_data:/var/lib/postgresql
 
 volumes:
-  postgres_data:
+  postgres_catalog_data:
+  postgres_basket_data:
