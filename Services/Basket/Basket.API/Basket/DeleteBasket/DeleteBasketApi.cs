@@ -23,9 +23,10 @@ namespace Basket.API.Basket.DeleteBasket
                  {
                      return Results.BadRequest("Failed to Delete the basket.");
                  }
-             }).WithDescription("EndPoint For Delete Basket Items with User Name")
+             }).WithDescription("Endpoint for deleting basket items by user name")
+               .WithSummary("Deletes a shopping basket")
                .WithName("DeleteBasket")
-               .Produces<DeleteBasketResult>(StatusCodes.Status200OK)
+               .Produces<string>(StatusCodes.Status200OK)
                .ProducesProblem(StatusCodes.Status400BadRequest);
         }
     }

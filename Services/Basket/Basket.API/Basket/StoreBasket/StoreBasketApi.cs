@@ -8,7 +8,7 @@ namespace Basket.API.Basket.StoreBasket
     public record StoreBasketRequest(string UserName, List<ShoppingCartItem> Items);
     public record StoreBasketResponse(string UserName);
 
-    public class DeleteBasketApi : ICarterModule
+    public class StoreBasketApi : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
@@ -25,9 +25,10 @@ namespace Basket.API.Basket.StoreBasket
                  {
                      return Results.BadRequest("Failed to store the basket.");
                  }
-             }).WithDescription("EndPoint For Store Basket Items with User Name")
+             }).WithDescription("Endpoint for storing basket items by user name")
+               .WithSummary("Stores a shopping basket")
                .WithName("StoreBasket")
-               .Produces<StoreBasketResult>(StatusCodes.Status200OK)
+               .Produces<StoreBasketResponse>(StatusCodes.Status201Created)
                .ProducesProblem(StatusCodes.Status400BadRequest);
         }
     }

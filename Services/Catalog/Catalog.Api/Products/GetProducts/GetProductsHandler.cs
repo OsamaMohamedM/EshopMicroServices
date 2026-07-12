@@ -7,7 +7,7 @@ namespace Catalog.Api.Products.GetProduct
 {
     public record GetProductsQuery(int? pageNumber = 1, int? PageSize = 10) : IQuery<GetProductResult>;
 
-    public record GetProductResult(IEnumerable<ProductDto> Products);
+    public record GetProductResult(IEnumerable<ProductDto> Data);
 
     public record ProductDto(Guid Id, string Name, string Description, decimal Price, string ImageFile, List<string> Category);
 

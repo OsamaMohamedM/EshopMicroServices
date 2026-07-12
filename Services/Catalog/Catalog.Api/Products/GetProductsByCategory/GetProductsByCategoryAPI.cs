@@ -23,7 +23,9 @@ namespace Catalog.Api.Products.GetProductsByCategory
                     var response = result.Adapt<GetProductsByCategoryResponseDto>();
                     return Results.Ok(response);
                 }
-                ).WithDisplayName("GetProductsByCategory")
+                ).WithName("GetProductsByCategory")
+                  .WithSummary("Gets products by category")
+                  .WithDisplayName("GetProductsByCategory")
                   .WithDescription("Get all products by category")
                   .Produces<GetProductsByCategoryResponseDto>(StatusCodes.Status200OK)
                   .ProducesProblem(StatusCodes.Status404NotFound)

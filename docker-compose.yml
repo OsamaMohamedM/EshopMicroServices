@@ -5,28 +5,51 @@ services:
       dockerfile: Services/Catalog/Catalog.Api/Dockerfile
     container_name: catalog.api
     depends_on:
-      - postgres_catalog
+      postgres_catalog:
+        condition: service_healthy
 
   basket.api:
     build:
       context: .
-      dockerfile: Services/Basket/Basket.api/Dockerfile
+      dockerfile: Services/Basket/Basket.API/Dockerfile
     container_name: basket.api
     depends_on:
-      - postgres_basket
+      postgres_basket:
+        condition: service_healthy
+      distributed_cache:
+        condition: service_healthy
+      discount.grpc:
+        condition: service_started
+
+  discount.grpc:
+    build:
+      context: .
+      dockerfile: Services/Discount/Discount.Grpc/Dockerfile
+    container_name: discount.grpc
+
+  ordering.api:
+    build:
+      context: .
+      dockerfile: Services/Ordering/Ordering.Api/Dockerfile
+    container_name: ordering.api
 
   postgres_catalog:
-    image: postgres
+    image: postgres:16
     container_name: postgres_catalog
     volumes:
-      - postgres_catalog_data:/var/lib/postgresql
+      - postgres_catalog_data:/var/lib/postgresql/data
 
   postgres_basket:
-    image: postgres
+    image: postgres:16
     container_name: postgres_basket
     volumes:
-      - postgres_basket_data:/var/lib/postgresql
+      - postgres_basket_data:/var/lib/postgresql/data
+
+  distributed_cache:
+    image: redis:7
+    container_name: distributed_cache
 
 volumes:
   postgres_catalog_data:
   postgres_basket_data:
+  discount_data:

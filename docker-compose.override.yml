@@ -4,49 +4,97 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
-      - Postgres_Username=postgres
-      - Postgres_Password=postgres
-      - Postgres_Database=catalog
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${HTTPS_CERT_PASSWORD:-eshop-dev-password}
+      - ConnectionStrings__CatalogConnection=Server=postgres_catalog;Port=5432;Database=catalog;User Id=postgres;Password=postgres;Include Error Detail=true
     restart: always
     ports:
-      - "8080:8080"
-      - "8081:8081"
+      - "6000:8080"
+      - "6060:8081"
     volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/ASP.NET/Https:/https:ro
 
   basket.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
-      - Postgres_Username=postgres
-      - Postgres_Password=postgres
-      - Postgres_Database=Basket
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${HTTPS_CERT_PASSWORD:-eshop-dev-password}
+      - ConnectionStrings__BasketDatabase=Server=postgres_basket;Port=5432;Database=basket;User Id=postgres;Password=postgres;Include Error Detail=true
+      - ConnectionStrings__Redis=distributed_cache:6379
+      - GrpcSettings__DiscountUrl=https://discount.grpc:8081
     restart: always
     ports:
-      - "5001:8080"
-      - "5051:8081"
+      - "6001:8080"
+      - "6061:8081"
     volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/ASP.NET/Https:/https:ro
+
+  discount.grpc:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${HTTPS_CERT_PASSWORD:-eshop-dev-password}
+      - ConnectionStrings__Database=Data Source=/app/data/discountDb
+    restart: always
+    ports:
+      - "6002:8080"
+      - "6062:8081"
+    volumes:
+      - discount_data:/app/data
+      - ${APPDATA}/ASP.NET/Https:/https:ro
+
+  ordering.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${HTTPS_CERT_PASSWORD:-eshop-dev-password}
+    restart: always
+    ports:
+      - "6003:8080"
+      - "6063:8081"
+    volumes:
+      - ${APPDATA}/ASP.NET/Https:/https:ro
 
   postgres_catalog:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=catalog
+    restart: always
     ports:
-     - "5434:5432"
+      - "5434:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d catalog"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   postgres_basket:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=Basket
+      - POSTGRES_DB=basket
+    restart: always
     ports:
-     - "5435:5432"
+      - "5435:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d basket"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  distributed_cache:
+    restart: always
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
