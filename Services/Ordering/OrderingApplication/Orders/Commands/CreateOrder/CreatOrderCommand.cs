@@ -6,7 +6,10 @@ namespace OrderingApplication.Orders.Commands.CreateOrder;
 
 public record CreatOrderCommand(OrderDto OrderDto) : ICommand<CreatOrderResult>;
 
-public class CreatOrderResult(Guid Id);
+public class CreatOrderResult(Guid id)
+{
+    public Guid Id { get; } = id;
+}
 
 public class CreatOrderCommandValidator : AbstractValidator<CreatOrderCommand>
 {

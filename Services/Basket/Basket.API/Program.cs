@@ -7,6 +7,7 @@ using Basket.API.Data.Repositries;
 using BuildingBlocks.Behaviors.LoggingBehavior;
 using BuildingBlocks.Behaviors.ValidationBehavior;
 using BuildingBlocks.Exceptions.Handler;
+using BuildingBlocksMessageing.MassTransit;
 using Carter;
 using Discount.Grpc.Protos;
 using Marten;
@@ -28,6 +29,9 @@ builder.Services.AddMediatR(cfg =>
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddMessageBroker(builder.Configuration);
+
 builder.Services.AddMarten(opt =>
 {
     opt.Connection(builder.Configuration.GetConnectionString("BasketDatabase")!);

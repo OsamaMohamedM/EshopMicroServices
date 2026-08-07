@@ -1,8 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Ordering.Infrastructure.Data.Interceptors;
 using OrderingApplication.Data;
 using OrderingInfastructure.Data;
+using OrderingInfastructure.Data.Interspector;
 
 namespace OrderingInfastructure
 {
@@ -12,13 +14,18 @@ namespace OrderingInfastructure
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<ApplicationDbContext>((sp, options) =>
             {
+                var connectionString = configuration.GetConnectionString("DefaultConnection");
+
                 options.UseSqlServer(connectionString);
-                options.AddInterceptors(new Data.Interspector.AuditTableEntityInterpector());
+
+                options.AddInterceptors(
+                    sp.GetRequiredService<AuditTableEntityInterpector>(),
+                    sp.GetRequiredService<DispatchDomainEventsInterceptor>());
             });
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
-
+            services.AddScoped<DispatchDomainEventsInterceptor>();
             return services;
         }
     }
