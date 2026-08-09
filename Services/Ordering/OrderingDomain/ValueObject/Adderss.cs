@@ -7,13 +7,17 @@ namespace OrderingDomain.ValueObject
         public string? EmailAddress { get; init; }
         public string AddressLine { get; init; }
         public string Country { get; init; }
+        public string State { get; init; }
+        public string ZipCode { get; init; }
 
         private Address(
             string firstName,
             string lastName,
             string? emailAddress,
             string addressLine,
-            string country
+            string country,
+            string state,
+            string zipCode
             )
         {
             FirstName = firstName;
@@ -21,6 +25,8 @@ namespace OrderingDomain.ValueObject
             EmailAddress = emailAddress;
             AddressLine = addressLine;
             Country = country;
+            State = state;
+            ZipCode = zipCode;
         }
 
         public static Address Create(
@@ -28,7 +34,9 @@ namespace OrderingDomain.ValueObject
             string lastName,
             string? emailAddress,
             string addressLine,
-            string country
+            string country,
+            string state,
+            string zipCode
             )
         {
             return new Address(
@@ -36,7 +44,9 @@ namespace OrderingDomain.ValueObject
                 lastName,
                 emailAddress,
                 addressLine,
-                country
+                country,
+                state,
+                zipCode
                 );
         }
     }

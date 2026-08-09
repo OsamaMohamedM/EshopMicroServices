@@ -17,4 +17,11 @@ public record BasketCheckOutEvent : IntegrationEvent
     public string CardExpiration { get; set; } = default!;
     public string CVV { get; set; } = default!;
     public int PaymentMethod { get; set; } = default!;
+    public List<BasketItemDto> BasketItems { get; set; } = new List<BasketItemDto>();
 }
+
+public record BasketItemDto(
+    Guid ProductId,
+    decimal Price,
+    int Quantity
+);

@@ -5,5 +5,7 @@ public record AddressDto(
     string LastName,
     string AddressLine,
     string EmailAddress,
-    string Country
+    string Country,
+    string State,
+    string ZipCode
     );

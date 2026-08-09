@@ -55,8 +55,8 @@ namespace OrderingInfastructure.Data
                 OrderId.Create(new Guid("a75c3d4f-4d6d-4952-97bb-23945f3cbb01")),
                 customerId,
                 OrderName.Create("Order #1001"),
-                Address.Create("Osama", "Mohamed", "osama@eshop.com", "123 Main St", "Egypt"),
-                Address.Create("Osama", "Mohamed", "osama@eshop.com", "123 Main St", "Egypt"),
+                Address.Create("Osama", "Mohamed", "osama@eshop.com", "123 Main St", "Egypt", "Cairo", "19178"),
+                Address.Create("Osama", "Mohamed", "osama@eshop.com", "123 Main St", "Egypt", "Cairo", "19178"),
                 Payment.Of("Osama Mohamed", "1234567890123456", "12/28", "123", 1)
             );
 

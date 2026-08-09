@@ -1,5 +1,6 @@
 services:
   catalog.api:
+    image: ${DOCKER_REGISTRY-}catalogapi
     build:
       context: .
       dockerfile: Services/Catalog/Catalog.Api/Dockerfile
@@ -9,6 +10,7 @@ services:
         condition: service_healthy
 
   basket.api:
+    image: ${DOCKER_REGISTRY-}basketapi
     build:
       context: .
       dockerfile: Services/Basket/Basket.API/Dockerfile
@@ -22,12 +24,14 @@ services:
         condition: service_started
 
   discount.grpc:
+    image: ${DOCKER_REGISTRY-}discountgrpc
     build:
       context: .
       dockerfile: Services/Discount/Discount.Grpc/Dockerfile
     container_name: discount.grpc
 
   ordering.api:
+    image: ${DOCKER_REGISTRY-}orderingapi
     build:
       context: .
       dockerfile: Services/Ordering/Ordering.Api/Dockerfile
@@ -38,7 +42,11 @@ services:
     container_name: postgres_catalog
     volumes:
       - postgres_catalog_data:/var/lib/postgresql/data
-
+  messagebroker:
+    image: rabbitmq:management
+    container_name: messagebroker
+    volumes:
+      - messagebroker_data:/var/lib/rabbitmq
   postgres_basket:
     image: postgres:16
     container_name: postgres_basket
@@ -53,3 +61,4 @@ volumes:
   postgres_catalog_data:
   postgres_basket_data:
   discount_data:
+  messagebroker_data:

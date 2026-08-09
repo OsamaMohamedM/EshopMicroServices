@@ -4,6 +4,7 @@ using BuildingBlocksMessageing.MassTransit;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.FeatureManagement;
 using System.Reflection;
 
 namespace OrderingApplication
@@ -18,7 +19,7 @@ namespace OrderingApplication
                 config.AddOpenBehavior(typeof(LoggingBehaviorr<,>));
                 config.AddOpenBehavior(typeof(ValidatorBehavior<,>));
             });
-
+            services.AddFeatureManagement();
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             services.AddMessageBroker(configuration, Assembly.GetExecutingAssembly());
             return services;
