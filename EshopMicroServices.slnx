@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/APIGETWays/">
+    <Project Path="APIGetWays/YARPGetWay/YARPGetWay.csproj" Id="13aff492-0ff7-435b-a7f7-51ce48e28635" />
+  </Folder>
   <Folder Name="/BuildingBlocks/">
     <Project Path="BuildingBlocks/BuildingBlocks/BuildingBlocks.csproj" Id="8e7868f1-2ff8-47ab-a717-38e24d20b899" />
     <Project Path="BuildingBlocks/BuildingBlocksMessageing/BuildingBlocksMessageing.csproj" Id="de3b1483-7b67-40bb-b730-ab0a03e805f4" />
