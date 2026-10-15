@@ -5,8 +5,8 @@ namespace Shopping.Web.Services;
 
 public interface IOrderingService
 {
-    [Get("/ordering-service/orders?pageIndex={pageIndex}&pageSize={pageSize}")]
-    Task<GetOrdersResponse> GetOrders(int? pageIndex = 1, int? pageSize = 10);
+    [Get("/ordering-service/orders")]
+    Task<GetOrdersResponse> GetOrders([Query] int? pageIndex, [Query] int? pageSize);
 
     [Get("/ordering-service/orders/{orderName}")]
     Task<GetOrdersByNameResponse> GetOrdersByName(string orderName);
