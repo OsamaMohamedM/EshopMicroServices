@@ -14,6 +14,8 @@
     </None>
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
+    <None Include="GRPC_DEEP_WALKTHROUGH_ANALYSIS.md" />
+    <None Include="GRPC_VISUAL_DIAGRAMS_AND_REFERENCE.md" />
     <None Include="MAPPING_ARCHITECTURE_DOCUMENTATION.md" />
   </ItemGroup>
 </Project>

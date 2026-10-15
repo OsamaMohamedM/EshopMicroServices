@@ -73,6 +73,17 @@ services:
     image: redis:7
     container_name: distributed_cache
 
+  yarp.gateway:
+    image: ${DOCKER_REGISTRY-}yarpgateway
+    build:
+      context: .
+      dockerfile: APIGETWays/YarpGateway/Dockerfile
+    container_name: yarp.gateway
+    depends_on:
+      - catalog.api
+      - basket.api
+      - ordering.api
+
 volumes:
   postgres_catalog_data:
   postgres_basket_data:

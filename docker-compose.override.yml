@@ -106,6 +106,15 @@ services:
       timeout: 5s
       retries: 5
 
+  yarp.gateway:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+    restart: always
+    ports:
+      - "5000:8080"
+      - "5001:8081"
   sqlserver_ordering:
     environment:
       - ACCEPT_EULA=Y
