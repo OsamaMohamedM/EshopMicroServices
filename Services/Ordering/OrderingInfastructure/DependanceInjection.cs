@@ -14,10 +14,11 @@ namespace OrderingInfastructure
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
 
+            services.AddScoped<AuditTableEntityInterpector>();
+            services.AddScoped<DispatchDomainEventsInterceptor>();
+
             services.AddDbContext<ApplicationDbContext>((sp, options) =>
             {
-                var connectionString = configuration.GetConnectionString("DefaultConnection");
-
                 options.UseSqlServer(connectionString);
 
                 options.AddInterceptors(
@@ -25,7 +26,6 @@ namespace OrderingInfastructure
                     sp.GetRequiredService<DispatchDomainEventsInterceptor>());
             });
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
-            services.AddScoped<DispatchDomainEventsInterceptor>();
             return services;
         }
     }

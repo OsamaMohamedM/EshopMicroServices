@@ -22,6 +22,8 @@ services:
         condition: service_healthy
       discount.grpc:
         condition: service_started
+      messagebroker:
+        condition: service_healthy
 
   discount.grpc:
     image: ${DOCKER_REGISTRY-}discountgrpc
@@ -36,6 +38,11 @@ services:
       context: .
       dockerfile: Services/Ordering/Ordering.Api/Dockerfile
     container_name: ordering.api
+    depends_on:
+      sqlserver_ordering:
+        condition: service_healthy
+      messagebroker:
+        condition: service_healthy
 
   postgres_catalog:
     image: postgres:16
@@ -53,6 +60,15 @@ services:
     volumes:
       - postgres_basket_data:/var/lib/postgresql/data
 
+  sqlserver_ordering:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver_ordering
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Ordering@Pass1
+    volumes:
+      - sqlserver_ordering_data:/var/opt/mssql
+
   distributed_cache:
     image: redis:7
     container_name: distributed_cache
@@ -62,3 +78,4 @@ volumes:
   postgres_basket_data:
   discount_data:
   messagebroker_data:
+  sqlserver_ordering_data:

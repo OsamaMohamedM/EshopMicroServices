@@ -18,7 +18,7 @@
     }
 
     public record GetShoppingCartResponse(ShippingCartModel Cart);
-    public record StoreBasketRequset(ShoppingCartItemModel Item);
+    public record StoreBasketRequset(ShippingCartModel Item);
     public record StoreBasketResponse(string UserName);
     public record DeleteBasketResponse(bool IsSuccess);
 }
