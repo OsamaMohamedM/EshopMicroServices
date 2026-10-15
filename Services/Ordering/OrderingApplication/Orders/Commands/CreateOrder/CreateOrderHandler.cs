@@ -23,6 +23,10 @@ public class CreateOrderHandler(IApplicationDbContext dbContext) : ICommandHandl
             shippingAddress,
             BillingAddress,
             payment);
+        foreach (var itemDto in orderDto.Items)
+        {
+            order.Add(ProductId.Create(itemDto.ProductId), itemDto.Quantity, itemDto.Price);
+        }
         return order;
     }
 }

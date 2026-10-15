@@ -7,7 +7,8 @@ using Mapster;
 
 namespace Discount.Grpc.Services
 {
-    public class DiscountService(DiscountContext db, ILogger<DiscountService> logger) : DiscountProtoService.DiscountProtoServiceBase
+    public class DiscountService(DiscountContext db, ILogger<DiscountService> logger) :
+        DiscountProtoService.DiscountProtoServiceBase
     {
         public override async Task<GetDiscountResponse> GetDiscount(GetDiscountRequest request, ServerCallContext context)
         {
@@ -30,18 +31,17 @@ namespace Discount.Grpc.Services
             {
                 Coupon = coupon.Adapt<CouponModel>()
             };
-            
+
             return response;
         }
 
         public override async Task<CreateDiscountResponse> CreateDiscount(CreateDiscountRequest request, ServerCallContext context)
         {
-           
             var coupon = request.Coupon.Adapt<Coupon>();
 
             db.Coupons.Add(coupon);
             await db.SaveChangesAsync();
-            
+
             logger.LogInformation("Discount is successfully created. ProductName: {ProductName}", coupon.ProductName);
 
             var response = new CreateDiscountResponse

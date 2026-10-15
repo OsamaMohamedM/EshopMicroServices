@@ -31,7 +31,9 @@ namespace OrderingDomain.Models
             OrderName orderName,
             Address shippingAddress,
             Address billingAddress,
-            Payment payment)
+            Payment payment
+
+            )
         {
             var order = new Order
             {

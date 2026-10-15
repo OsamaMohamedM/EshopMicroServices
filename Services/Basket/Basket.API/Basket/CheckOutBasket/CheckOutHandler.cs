@@ -21,7 +21,8 @@ public class CheckOutBasketCommandValidator : AbstractValidator<CheckOutBasketCo
 
 public record CheckOutBasketResult(bool Success);
 
-public class CheckOutHandler(IBasketRepository basketRepository, IPublishEndpoint publishEndpoint) : ICommandHandler<CheckOutBasketCommand, CheckOutBasketResult>
+public class CheckOutHandler(IBasketRepository basketRepository, IPublishEndpoint publishEndpoint) :
+    ICommandHandler<CheckOutBasketCommand, CheckOutBasketResult>
 {
     public async Task<CheckOutBasketResult> Handle(CheckOutBasketCommand request, CancellationToken cancellationToken)
     {
